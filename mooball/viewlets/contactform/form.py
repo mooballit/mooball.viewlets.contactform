@@ -1,5 +1,6 @@
 # coding=utf-8
 from Acquisition import aq_inner
+from Products.CMFCore.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
 from five import grok
 import plone.app.layout.viewlets.interfaces
@@ -17,6 +18,10 @@ class ContactFormViewlet(grok.Viewlet):
     def update(self):
         self.form = ContactForm(aq_inner(self.context), self.request)
         self.form.update()
+
+    def has_email_from(self):
+        portal = getToolByName(self.context, 'portal_url').getPortalObject()
+        return bool(portal.email_from_address)
 
 
 class IContactForm(plone.directives.form.Schema):

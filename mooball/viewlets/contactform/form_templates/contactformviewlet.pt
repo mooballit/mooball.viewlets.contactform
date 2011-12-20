@@ -1,1 +1,9 @@
-<div tal:replace="structure viewlet/form/render" />
+<div tal:omit-tag=""
+  tal:define="email_setup viewlet/has_email_from">
+
+  <div tal:condition="email_setup" tal:replace="structure viewlet/form/render" />
+  <p tal:condition="not:email_setup">
+    This site doesn't have a valid email setup, so you cannot use
+    any contact forms.
+  </p>
+</div>

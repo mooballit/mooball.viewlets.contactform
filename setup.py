@@ -1,5 +1,4 @@
-from setuptools import setup, find_packages
-
+from setuptools import setup, find_packages 
 version = '0.1'
 tests_require = ['plone.app.testing']
 
@@ -19,7 +18,7 @@ setup(name='mooball.viewlets.contactform',
       author_email='roman@mooball.net',
       license='gpl',
       packages=find_packages(exclude=['ez_setup']),
-      namespace_packages=['mooball'],
+      namespace_packages=['mooball','mooball.viewlets'],
       include_package_data=True,
       zip_safe=False,
       install_requires=[

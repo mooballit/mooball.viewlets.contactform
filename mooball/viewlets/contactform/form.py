@@ -44,4 +44,8 @@ class ContactForm(plone.directives.form.Form):
 
     @z3c.form.button.buttonAndHandler(u'Submit', name='submit')
     def submit(self, action):
-        pass
+        data, errors = self.extractData()
+        if errors:
+            self.status = self.formErrorsMessage
+            return
+        self.nextURL()

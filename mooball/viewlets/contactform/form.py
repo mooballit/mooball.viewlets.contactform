@@ -1,10 +1,11 @@
 # coding=utf-8
-from five import grok
 from Acquisition import aq_inner
+from Products.statusmessages.interfaces import IStatusMessage
+from five import grok
 import plone.app.layout.viewlets.interfaces
 import plone.directives.form
-import z3c.form.field
 import z3c.form.button
+import z3c.form.field
 import zope.interface
 
 
@@ -49,3 +50,9 @@ class ContactForm(plone.directives.form.Form):
             self.status = self.formErrorsMessage
             return
         self.nextURL()
+
+    def nextURL(self):
+        IStatusMessage(self.request).addStatusMessage(
+            u'Thank you for your enquiry', 'info'
+        )
+        self.request.response.redirect(self.context.absolute_url())

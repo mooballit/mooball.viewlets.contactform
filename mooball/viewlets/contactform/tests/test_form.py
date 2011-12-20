@@ -1,5 +1,6 @@
 import unittest
-from mooball.viewlets.contactform.testing import CONTACTFORM_INTEGRATION_TESTING
+from mooball.viewlets.contactform.testing import \
+        CONTACTFORM_INTEGRATION_TESTING, debug_contents
 from plone.testing.z2 import Browser
 
 
@@ -19,3 +20,11 @@ class TestContactFormViewlet(unittest.TestCase):
         self.browser.getControl('Your Name').value = 'Roman'
         self.browser.getControl('Submit').click()
         self.assertTrue('Error' in self.browser.contents)
+
+    def test_mailout(self):
+        self.browser.getControl('Your Name').value = 'Roman'
+        self.browser.getControl('Your Email').value = 'roman@mooball.com'
+        self.browser.getControl('Your Message').value = 'Good stuff'
+        self.browser.getControl('Submit').click()
+        debug_contents(self.browser.contents)
+        self.assertTrue('Thank you' in self.browser.contents)

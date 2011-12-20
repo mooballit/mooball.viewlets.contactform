@@ -22,8 +22,9 @@ setup(name='mooball.viewlets.contactform',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'setuptools',
+          'Products.statusmessages',
           'plone.app.dexterity',
+          'setuptools',
       ],
       extras_require=dict(tests=tests_require),
       entry_points="""

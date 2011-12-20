@@ -1,5 +1,6 @@
 from Products.CMFCore.utils import getToolByName
 from mooball.viewlets.contactform.form import ContactFormViewlet
+from mooball.viewlets.contactform.form import IContactFormViewletLayer
 from mooball.viewlets.contactform.testing import CONTACTFORM_INTEGRATION_TESTING
 from plone.testing.z2 import Browser
 import plone.app.z3cform.interfaces
@@ -61,6 +62,7 @@ class TestContactFormViewlet(unittest.TestCase):
     def setUp(self):
         zope.interface.alsoProvides(self.layer['request'],
                                     plone.app.z3cform.interfaces.IPloneFormLayer)
+        zope.interface.alsoProvides(self.layer['request'], IContactFormViewletLayer)
         self.form = zope.component.getMultiAdapter(
             (self.layer['portal'], self.layer['request']), name='contactus.html')
         self.form.updateWidgets()

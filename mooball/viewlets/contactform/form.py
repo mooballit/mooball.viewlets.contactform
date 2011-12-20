@@ -12,10 +12,15 @@ import z3c.form.field
 import zope.interface
 
 
+class IContactFormViewletLayer(zope.interface.Interface):
+    """ Viewlet only browserlayer."""
+
+
 class ContactFormViewlet(grok.Viewlet):
     grok.name('mooball.contact_form')
     grok.context(zope.interface.Interface)
     grok.viewletmanager(plone.app.layout.viewlets.interfaces.IPortalFooter)
+    grok.layer(IContactFormViewletLayer)
 
     def update(self):
         self.form = ContactForm(aq_inner(self.context), self.request)
@@ -46,6 +51,7 @@ class ContactForm(plone.directives.form.Form):
     grok.name('contactus.html')
     grok.require('zope2.View')
     grok.context(zope.interface.Interface)
+    grok.layer(IContactFormViewletLayer)
     fields = z3c.form.field.Fields(IContactForm)
     ignoreContext = True
     plone.directives.form.wrap(False)

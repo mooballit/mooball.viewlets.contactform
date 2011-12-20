@@ -23,7 +23,7 @@ setup(name='mooball.viewlets.contactform',
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'five.grok',
+          'plone.app.dexterity',
       ],
       extras_require=dict(tests=tests_require),
       entry_points="""

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<object>
+    <order manager="plone.footer">
+        <viewlet name="mooball.contact_form" />
+    </order>
+</object>

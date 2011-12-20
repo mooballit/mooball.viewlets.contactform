@@ -7,6 +7,11 @@ from zope.configuration import xmlconfig
 import mooball.viewlets.contactform
 
 
+def debug_contents(contents):
+    with open('/tmp/debug.html', 'w') as f:
+        f.write(contents)
+
+
 class ContactFormTestBase(PloneSandboxLayer):
     defaultBases = (PLONE_FIXTURE,)
 

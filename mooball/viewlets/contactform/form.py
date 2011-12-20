@@ -1,4 +1,6 @@
 # coding=utf-8
+import logging
+import email
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
@@ -54,6 +56,7 @@ class ContactForm(plone.directives.form.Form):
         if errors:
             self.status = self.formErrorsMessage
             return
+        self.prepare_and_send(data)
         self.nextURL()
 
     def nextURL(self):
@@ -61,3 +64,29 @@ class ContactForm(plone.directives.form.Form):
             u'Thank you for your enquiry', 'info'
         )
         self.request.response.redirect(self.context.absolute_url())
+
+    def prepare_and_send(self, data):
+        """ Sends an e-mail to the administrator."""
+        mailhost = getToolByName(self.context, 'MailHost')
+        portal = getToolByName(self.context,
+                               'portal_url').getPortalObject()
+        encoding = portal.getProperty('email_charset')
+        subject = u'Feedback from {0}'.format(portal.Title())
+        to_address = portal.getProperty('email_from_address')
+        envelope_from = '{0} <{1}>'.format(data['name'], data['email'])
+
+        mail = email.MIMEMultipart.MIMEMultipart()
+        mail_template = self.context.restrictedTraverse('feedbackmail')
+        mail_template = mail_template(self.context, **data)
+        mail.attach(email.MIMEText.MIMEText(
+            mail_template.encode(encoding), 'html', encoding))
+
+        self.log(to_address, envelope_from, subject, data)
+        mailhost.send(mail, to_address, envelope_from,
+                      subject=subject, charset=encoding)
+
+    def log(self, send_to_address, envelope_from, subject, data):
+        logger = logging.getLogger('mooball.viewlets.contactform')
+        msg = 'Sending email {0} from {1} - "{2}": {3}'.format(
+            send_to_address, envelope_from, subject, data)
+        logger.info(msg)

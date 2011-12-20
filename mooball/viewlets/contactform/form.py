@@ -50,6 +50,17 @@ class ContactForm(plone.directives.form.Form):
     ignoreContext = True
     plone.directives.form.wrap(False)
 
+    def updateWidgets(self):
+        super(ContactForm, self).updateWidgets()
+        ptool = getToolByName(self.context, 'portal_properties')
+        use_inline_titles = ptool.contactform_properties.getProperty(
+            'inline_titles')
+        if use_inline_titles:
+            for key in self.widgets:
+                w = self.widgets[key]
+                w.klass += ' inputLabel'
+                w.title = w.field.title
+
     @z3c.form.button.buttonAndHandler(u'Submit', name='submit')
     def submit(self, action):
         data, errors = self.extractData()

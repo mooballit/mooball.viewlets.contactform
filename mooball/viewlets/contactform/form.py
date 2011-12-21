@@ -1,10 +1,11 @@
 # coding=utf-8
-import logging
-import email
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
 from Products.statusmessages.interfaces import IStatusMessage
 from five import grok
+import email
+import logging
+import plone.app.layout.viewlets.common
 import plone.app.layout.viewlets.interfaces
 import plone.directives.form
 import z3c.form.button
@@ -16,11 +17,7 @@ class IContactFormViewletLayer(zope.interface.Interface):
     """ Viewlet only browserlayer."""
 
 
-class ContactFormViewlet(grok.Viewlet):
-    grok.name('mooball.contact_form')
-    grok.context(zope.interface.Interface)
-    grok.viewletmanager(plone.app.layout.viewlets.interfaces.IPortalFooter)
-    grok.layer(IContactFormViewletLayer)
+class ContactFormViewlet(plone.app.layout.viewlets.common.ViewletBase):
 
     def update(self):
         self.form = ContactForm(aq_inner(self.context), self.request)

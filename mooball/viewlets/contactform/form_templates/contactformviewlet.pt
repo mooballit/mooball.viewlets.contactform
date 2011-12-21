@@ -1,7 +1,7 @@
 <div class="ContactMailForm"
-  tal:define="email_setup viewlet/has_email_from">
+  tal:define="email_setup view/has_email_from">
 
-  <div tal:condition="email_setup" tal:replace="structure viewlet/form/render" />
+  <div tal:condition="email_setup" tal:replace="structure view/form/render" />
   <p tal:condition="not:email_setup">
     This site doesn't have a valid email setup, so you cannot use
     any contact forms.

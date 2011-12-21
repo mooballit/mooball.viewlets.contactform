@@ -20,6 +20,7 @@ class TestContactFormViewletIntegration(unittest.TestCase):
         transaction.commit()
 
         self.browser = Browser(self.layer['app'])
+        self.browser.handleErrors = False
         self.browser.open(self.portal.absolute_url())
 
     def test_render(self):

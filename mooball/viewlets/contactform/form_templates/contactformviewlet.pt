@@ -1,5 +1,7 @@
-<div class="ContactMailForm"
+<div class="ContactMailForm Columns"
   tal:define="email_setup view/has_email_from">
+
+  <h5>Contact Us</h5>
 
   <div tal:condition="email_setup" tal:replace="structure view/form/render" />
   <p tal:condition="not:email_setup">

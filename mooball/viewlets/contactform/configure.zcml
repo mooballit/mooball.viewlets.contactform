@@ -11,6 +11,8 @@
 
   <includeDependencies package="." />
 
+  <include package="plone.formwidget.captcha" />
+
   <grok:grok package="." />
 
   <genericsetup:registerProfile

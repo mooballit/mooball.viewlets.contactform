@@ -1,13 +1,25 @@
 from Products.CMFCore.utils import getToolByName
 from mooball.viewlets.contactform.form import ContactFormViewlet
+from mooball.viewlets.contactform.form import IContactForm
 from mooball.viewlets.contactform.form import IContactFormViewletLayer
 from mooball.viewlets.contactform.testing import CONTACTFORM_INTEGRATION_TESTING
 from plone.testing.z2 import Browser
 import plone.app.z3cform.interfaces
 import transaction
 import unittest
+import z3c.form.validator
 import zope.component
 import zope.interface
+
+
+class FakeCaptchaValidator(z3c.form.validator.SimpleFieldValidator):
+
+    def validate(self, value):
+        return True
+
+
+z3c.form.validator.WidgetValidatorDiscriminators(
+    FakeCaptchaValidator, field=IContactForm['captcha'])
 
 
 class TestContactFormViewletIntegration(unittest.TestCase):

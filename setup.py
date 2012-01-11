@@ -24,6 +24,7 @@ setup(name='mooball.viewlets.contactform',
       install_requires=[
           'Products.statusmessages',
           'plone.app.dexterity',
+          'plone.formwidget.captcha',
           'setuptools',
       ],
       extras_require=dict(tests=tests_require),

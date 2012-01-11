@@ -8,8 +8,10 @@ import logging
 import plone.app.layout.viewlets.common
 import plone.app.layout.viewlets.interfaces
 import plone.directives.form
+import plone.formwidget.captcha.validator
 import z3c.form.button
 import z3c.form.field
+import z3c.form.validator
 import zope.interface
 
 
@@ -42,6 +44,15 @@ class IContactForm(plone.directives.form.Schema):
         title=u'Your Message'
     )
 
+    captcha = zope.schema.TextLine(
+        title=u'Captcha',
+        required=False)
+
+
+z3c.form.validator.WidgetValidatorDiscriminators(
+    plone.formwidget.captcha.validator.CaptchaValidator,
+    field=IContactForm['captcha'])
+
 
 class ContactForm(plone.directives.form.Form):
     description = u'Note: ■ are required fields.'
@@ -50,8 +61,11 @@ class ContactForm(plone.directives.form.Form):
     grok.context(zope.interface.Interface)
     grok.layer(IContactFormViewletLayer)
     fields = z3c.form.field.Fields(IContactForm)
+    fields['captcha'].widgetFactory = (
+        plone.formwidget.captcha.widget.CaptchaFieldWidget)
     ignoreContext = True
     plone.directives.form.wrap(False)
+    id = 'mooball-viewlets-contactform'
 
     def updateWidgets(self):
         super(ContactForm, self).updateWidgets()

@@ -47,6 +47,7 @@ class TestContactFormViewletIntegration(unittest.TestCase):
         self.browser.getControl('Your Name').value = 'Roman'
         self.browser.getControl('Your Email').value = 'roman@mooball.com'
         self.browser.getControl('Your Message').value = 'Good stuff'
+        self.browser.getControl('Captcha').value = 'ignored'
         self.browser.getControl('Submit').click()
         self.assertTrue('Thank you' in self.browser.contents)
         self.assertEquals(1, len(self.portal.MailHost.messages))

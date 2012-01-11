@@ -45,8 +45,7 @@ class IContactForm(plone.directives.form.Schema):
     )
 
     captcha = zope.schema.TextLine(
-        title=u'Captcha',
-        required=False)
+        title=u'Captcha')
 
 
 z3c.form.validator.WidgetValidatorDiscriminators(

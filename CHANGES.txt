@@ -1,0 +1,12 @@
+Change History
+==============
+
+0.2 (2012-01-13)
+----------------
+
+- Provide a captcha field to prevent spamming
+
+0.1 (2011-12-22)
+----------------
+
+Initial release.

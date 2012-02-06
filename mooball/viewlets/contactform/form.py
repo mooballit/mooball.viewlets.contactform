@@ -59,12 +59,22 @@ class ContactForm(plone.directives.form.Form):
     grok.require('zope2.View')
     grok.context(zope.interface.Interface)
     grok.layer(IContactFormViewletLayer)
-    fields = z3c.form.field.Fields(IContactForm)
-    fields['captcha'].widgetFactory = (
-        plone.formwidget.captcha.widget.CaptchaFieldWidget)
     ignoreContext = True
     plone.directives.form.wrap(False)
     id = 'mooball-viewlets-contactform'
+
+    @property
+    def fields(self):
+        ptool = getToolByName(self.context, 'portal_properties')
+        show_captcha = ptool.contactform_properties.getProperty(
+            'show_captcha', False)
+        fields = z3c.form.field.Fields(IContactForm)
+        if show_captcha:
+            fields['captcha'].widgetFactory = (
+                plone.formwidget.captcha.widget.CaptchaFieldWidget)
+        else:
+            fields = fields.omit('captcha')
+        return fields
 
     def updateWidgets(self):
         super(ContactForm, self).updateWidgets()

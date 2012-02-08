@@ -55,6 +55,11 @@ class TestContactFormViewletIntegration(unittest.TestCase):
         self.assertTrue('Thank you' in self.browser.contents)
         self.assertEquals(1, len(self.portal.MailHost.messages))
 
+    def test_captcha_present(self):
+        self.browser.getControl('Captcha')
+        #Will error if not present
+        self.assertTrue(True)
+
 
 class TestContactFormViewlet(unittest.TestCase):
 
@@ -92,3 +97,23 @@ class TestContactFormViewlet(unittest.TestCase):
         ptool.contactform_properties.inline_titles = True
         self.form.updateWidgets()
         self.assertTrue(self.form.widgets['name'].title)
+
+class TestContactFormCaptchaOmitted(unittest.TestCase):
+
+    layer = CONTACTFORM_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.portal.manage_changeProperties(email_from_address='admin@mooball.net')
+
+        self.browser = Browser(self.layer['app'])
+        self.browser.handleErrors = False
+        self.browser.open(self.portal.absolute_url())
+
+    def test_captcha_omitted(self):
+        try: 
+            self.browser.getControl('Captcha')
+            #Shouldn't get to here, because by default captcha is disabled
+            self.assertTrue(False)
+        except LookupError:
+            self.assertTrue(True)

@@ -29,6 +29,9 @@ class TestContactFormViewletIntegration(unittest.TestCase):
     def setUp(self):
         self.portal = self.layer['portal']
         self.portal.manage_changeProperties(email_from_address='admin@mooball.net')
+        ptool = getToolByName(self.layer['portal'], 'portal_properties')
+        if not ptool.contactform_properties.hasProperty('show_captcha'):
+            ptool.contactform_properties._setProperty('show_captcha', True, type='boolean')
         transaction.commit()
 
         self.browser = Browser(self.layer['app'])

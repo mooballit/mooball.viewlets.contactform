@@ -1,6 +1,10 @@
 Change History
 ==============
 
+0.2.1 (2012-02-09)
+-----------------
+- Added ability to turn captcha on or off depending on property setting
+
 0.2 (2012-01-13)
 ----------------
 

@@ -1,12 +1,13 @@
 from Products.CMFCore.utils import getToolByName
 from mooball.viewlets.contactform.form import ContactFormViewlet
-from mooball.viewlets.contactform.form import IContactForm
 from mooball.viewlets.contactform.form import IContactFormViewletLayer
 from mooball.viewlets.contactform.testing import CONTACTFORM_INTEGRATION_TESTING
 from plone.testing.z2 import Browser
 import plone.app.z3cform.interfaces
+import plone.formwidget.captcha.validator
 import transaction
 import unittest
+import z3c.form.interfaces
 import z3c.form.validator
 import zope.component
 import zope.interface
@@ -18,10 +19,6 @@ class FakeCaptchaValidator(z3c.form.validator.SimpleFieldValidator):
         return True
 
 
-z3c.form.validator.WidgetValidatorDiscriminators(
-    FakeCaptchaValidator, field=IContactForm['captcha'])
-
-
 class TestContactFormViewletIntegration(unittest.TestCase):
 
     layer = CONTACTFORM_INTEGRATION_TESTING
@@ -31,12 +28,26 @@ class TestContactFormViewletIntegration(unittest.TestCase):
         self.portal.manage_changeProperties(email_from_address='admin@mooball.net')
         ptool = getToolByName(self.layer['portal'], 'portal_properties')
         if not ptool.contactform_properties.hasProperty('show_captcha'):
-            ptool.contactform_properties._setProperty('show_captcha', True, type='boolean')
+            ptool.contactform_properties._setProperty(
+                'show_captcha', True, type='boolean')
+        sm = zope.component.getGlobalSiteManager()
+        sm.unregisterAdapter(
+            plone.formwidget.captcha.validator.CaptchaValidator,
+            provided=z3c.form.interfaces.IValidator
+            )
         transaction.commit()
 
         self.browser = Browser(self.layer['app'])
         self.browser.handleErrors = False
         self.browser.open(self.portal.absolute_url())
+
+    def tearDown(self):
+        sm = zope.component.getGlobalSiteManager()
+        sm.registerAdapter(
+            plone.formwidget.captcha.validator.CaptchaValidator,
+            provided=z3c.form.interfaces.IValidator
+            )
+        transaction.commit()
 
     def test_render(self):
         self.assertTrue(self.browser.getControl('Your Name'))

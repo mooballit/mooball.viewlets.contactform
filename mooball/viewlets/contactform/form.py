@@ -12,6 +12,7 @@ import plone.formwidget.captcha.validator
 import z3c.form.button
 import z3c.form.field
 import z3c.form.validator
+import z3c.form.form
 import zope.interface
 
 

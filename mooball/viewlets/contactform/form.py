@@ -1,8 +1,8 @@
 # coding=utf-8
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
+from zope.app.pagetemplate import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
-from five import grok
 import email
 import logging
 import plone.app.layout.viewlets.common
@@ -30,7 +30,7 @@ class ContactFormViewlet(plone.app.layout.viewlets.common.ViewletBase):
         return bool(portal.email_from_address)
 
 
-class IContactForm(plone.directives.form.Schema):
+class IContactForm(zope.interface.Interface):
 
     name = zope.schema.TextLine(
         title=u'Your Name'
@@ -48,20 +48,11 @@ class IContactForm(plone.directives.form.Schema):
         title=u'Captcha')
 
 
-z3c.form.validator.WidgetValidatorDiscriminators(
-    plone.formwidget.captcha.validator.CaptchaValidator,
-    field=IContactForm['captcha'])
-
-
-class ContactForm(plone.directives.form.Form):
+class ContactForm(z3c.form.form.Form):
     description = u'Note: ■ are required fields.'
-    grok.name('contactus.html')
-    grok.require('zope2.View')
-    grok.context(zope.interface.Interface)
-    grok.layer(IContactFormViewletLayer)
     ignoreContext = True
-    plone.directives.form.wrap(False)
     id = 'mooball-viewlets-contactform'
+    template = ViewPageTemplateFile('form_templates/contactform.pt')
 
     @property
     def fields(self):
@@ -127,3 +118,10 @@ class ContactForm(plone.directives.form.Form):
         msg = 'Sending email {0} from {1} - "{2}": {3}'.format(
             send_to_address, envelope_from, subject, data)
         logger.info(msg)
+
+
+z3c.form.validator.WidgetValidatorDiscriminators(
+    plone.formwidget.captcha.validator.CaptchaValidator,
+    field=IContactForm['captcha'],
+    view=ContactForm,
+    widget=plone.formwidget.captcha.widget.CaptchaFieldWidget)

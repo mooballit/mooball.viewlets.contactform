@@ -13,8 +13,6 @@
 
   <include package="plone.formwidget.captcha" />
 
-  <grok:grok package="." />
-
   <genericsetup:registerProfile
     name="default"
     title="Contact Form viewlet"

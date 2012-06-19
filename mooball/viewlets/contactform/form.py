@@ -48,6 +48,11 @@ class IContactForm(zope.interface.Interface):
         title=u'Captcha')
 
 
+z3c.form.validator.WidgetValidatorDiscriminators(
+    plone.formwidget.captcha.validator.CaptchaValidator,
+    field=IContactForm['captcha'])
+
+
 class ContactForm(z3c.form.form.Form):
     description = u'Note: ■ are required fields.'
     ignoreContext = True
@@ -118,10 +123,3 @@ class ContactForm(z3c.form.form.Form):
         msg = 'Sending email {0} from {1} - "{2}": {3}'.format(
             send_to_address, envelope_from, subject, data)
         logger.info(msg)
-
-
-z3c.form.validator.WidgetValidatorDiscriminators(
-    plone.formwidget.captcha.validator.CaptchaValidator,
-    field=IContactForm['captcha'],
-    view=ContactForm,
-    widget=plone.formwidget.captcha.widget.CaptchaFieldWidget)

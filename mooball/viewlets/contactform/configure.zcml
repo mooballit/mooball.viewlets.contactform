@@ -37,4 +37,8 @@
     permission="zope2.View"
     />
 
+  <adapter
+    factory="plone.formwidget.captcha.validator.CaptchaValidator"
+        />
+
 </configure>

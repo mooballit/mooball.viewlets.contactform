@@ -7,7 +7,6 @@ import email
 import logging
 import plone.app.layout.viewlets.common
 import plone.app.layout.viewlets.interfaces
-import plone.directives.form
 import plone.formwidget.captcha.validator
 import z3c.form.button
 import z3c.form.field

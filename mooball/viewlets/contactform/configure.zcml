@@ -39,4 +39,12 @@
     factory="plone.formwidget.captcha.validator.CaptchaValidator"
         />
 
+  <browser:page
+    name="contactus.html"
+    for="*"
+    class=".form.ContactForm"
+    layer="mooball.viewlets.contactform.form.IContactFormViewletLayer"
+    permission="zope2.View"
+    />
+
 </configure>

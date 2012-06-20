@@ -1,5 +1,5 @@
-from setuptools import setup, find_packages 
-version = '0.2.1'
+from setuptools import setup, find_packages
+version = '0.3'
 tests_require = ['plone.app.testing']
 
 setup(name='mooball.viewlets.contactform',
